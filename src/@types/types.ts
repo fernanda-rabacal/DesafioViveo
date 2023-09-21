@@ -1,7 +1,7 @@
 import { InputBaseComponentProps } from '@mui/material'
 
 export interface InputProps extends InputBaseComponentProps {
-    hasError?: boolean
+    errorMessage?: string
 }
 
 export interface LoginProps {

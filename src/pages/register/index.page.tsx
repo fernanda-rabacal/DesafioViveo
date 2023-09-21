@@ -1,15 +1,14 @@
-import { Input } from "@/components/Input";
-import { PasswordInput } from "@/components/Input/PasswordInput";
-import { Button, FormControl, TextField, Typography } from "@mui/material";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import z  from 'zod'
-import { useEffect } from "react";
 import { maskCPF } from "@/utils/masks";
-import { RegisterProps } from "@/@types/types";
 
+import { Input } from "@/components/Input";
+import { PasswordInput } from "@/components/Input/PasswordInput";
+import { Button, Typography } from "@mui/material";
 
 const registerFormSchema = z.object({
     name: z
@@ -41,19 +40,21 @@ type RegisterFormData = z.infer<typeof registerFormSchema>
 
 export default function Register() {
     const { 
-        register, 
         watch, 
         setValue, 
         handleSubmit, 
         control,
-        formState: { errors, isSubmitting }
+        formState: { 
+          errors, 
+          isSubmitting 
+        }
       } = useForm<RegisterFormData>({
         resolver: zodResolver(registerFormSchema)
       })
     
       const cpfValue = watch("cpf")
 
-      function handleRegister(data: RegisterProps) {
+      function handleRegister(data: RegisterFormData) {
         console.log(data)
       }
     
@@ -65,70 +66,77 @@ export default function Register() {
 
     return (
         <>
-            <Head>
-                <title>Cadastre-se | Viveo</title>
-            </Head>
-            {/* <header className="w-full flex justify-center p-4 border-b border-rose-200">
-                <Image width={150} height={150} src="/images/viveo-logo.svg" alt="Viveo Logo" />
-            </header> */}
-            <main className="flex flex-col items-center">
-                <Typography variant="h1" className='text-4xl my-8 lg:my-12'>Cadastre, é rápido e facil</Typography>
+          <Head>
+              <title>Cadastre-se | Viveo</title>
+          </Head>
 
-                <section>
-                    <form className="flex flex-col gap-4" onSubmit={handleSubmit(handleRegister)}>
-                        <input 
-                            type="text"
-                            id="name"
-                            placeholder="Nome completo" {...register("name")} />
-                        <Input 
-                            id="cpf"
-                            name="cpf"
-                            type="text"
-                            placeholder="CPF"
-                            control={control}
-                            />
-                        <Input 
-                            id="phone"
-                            name="phone"
-                            type="tel"
-                            placeholder="Telefone"
-                            control={control}
-                            />
-                        <Input 
-                            id="email"
-                            name="email"
-                            type="email"
-                            placeholder="E-mail"
-                            control={control}
-                            />
-                        <PasswordInput 
-                            id="password"
-                            name="password"
-                            type="password"
-                            placeholder="Senha"
-                            control={control}
-                            />
-                        <Input 
-                            id="confirm_password"
-                            name="confirm_password"
-                            type="password"
-                            placeholder="Confirme a senha"
-                            icontrol={control}
-                            />
-                        <Button 
-                            className='text-xl p-3 mt-3 bg-blue-primary text-blue-dark hover:bg-blue-dark hover:text-blue-primary' 
-                            variant="contained"
-                            size="large"
-                            type="submit"
-                            >
-                            Cadastrar
-                        </Button>
-                        <FormControl>
+          <main className="flex flex-col items-center">
+            <section className='flex flex-col items-center justify-center mt-4 w-full'>
+              <Image width={150} height={150} src="/images/viveo-logo.svg" alt="Viveo Logo" />
 
-                        </FormControl>
-                    </form>
-                </section>
-            </main>
+              <Typography variant="h1" className='text-4xl my-8 lg:my-12'>Cadastre, é rápido e facil</Typography>
+
+              <form className="w-4/5 lg:w-3/5 flex flex-col gap-5" onSubmit={handleSubmit(handleRegister)}>
+                  <Input 
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Nome completo" 
+                      control={control} 
+                      errorMessage={errors.name?.message}
+                    />
+                  <Input 
+                      id="cpf"
+                      name="cpf"
+                      type="text"
+                      placeholder="CPF"
+                      control={control}
+                      errorMessage={errors.cpf?.message}
+                      />
+                  <Input 
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="Telefone"
+                      control={control}
+                      errorMessage={errors.phone?.message}
+                      />
+                  <Input 
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="E-mail"
+                      control={control}
+                      errorMessage={errors.email?.message}
+                      />
+                  <PasswordInput 
+                      id="password"
+                      name="password"
+                      type="password"
+                      placeholder="Senha"
+                      control={control}
+                      errorMessage={errors.password?.message}
+                      />
+                  <Input 
+                      id="confirm_password"
+                      name="confirm_password"
+                      type="password"
+                      placeholder="Confirme a senha"
+                      control={control}
+                      errorMessage={errors.confirm_password?.message}
+                      />
+                  <Button 
+                      className='text-xl p-3 mt-3 bg-blue-primary text-blue-dark hover:bg-blue-dark hover:text-blue-primary' 
+                      variant="contained"
+                      size="large"
+                      type="submit"
+                      disabled={isSubmitting}
+                      >
+                      Cadastrar
+                  </Button>
+              </form>
+            </section>
+          </main>
         </>
     )
 }

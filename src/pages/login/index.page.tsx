@@ -2,22 +2,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import Head from "next/head";
 import Link from "next/link";
 import Image from 'next/image';
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
-//import { AuthContext } from "@/contexts/AuthContext";
-import { useRouter } from "next/router";
 import { toastNotify } from '@/lib/toastify';
 import { ToastContainer } from "react-toastify";
 import { Input } from '@/components/Input';
 import { PasswordInput } from '@/components/Input/PasswordInput';
-import {  
-  Button, 
-  Checkbox, 
-  FormControlLabel, 
-  Typography
-} from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
 
 
 const loginFormSchema = z.object({
@@ -29,13 +22,9 @@ const loginFormSchema = z.object({
 type LoginFormData = z.infer<typeof loginFormSchema>
 
 export default function Login() {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+  const { control, register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema)
   })
-
-  const router = useRouter()
-
-  //const { signIn } = useContext(AuthContext)
 
   const handleSignIn = async (data: LoginFormData) => {
     toastNotify("success", "teste")
@@ -53,8 +42,9 @@ export default function Login() {
       </Head>
 
       <ToastContainer />
+      
       <main className='grid grid-cols-1 lg:grid-cols-2 h-screen'>
-        <section className='flex flex-col items-center justify-center'>
+        <section className='flex flex-col items-center justify-center mt-4'>
           <Image width={150} height={150} src="/images/viveo-logo.svg" alt="Viveo Logo" className='md:w-48'/>
 
           <Typography variant="h1" className='text-4xl my-8 lg:my-12'>Acesse sua conta</Typography>
@@ -64,15 +54,15 @@ export default function Login() {
               type="email" 
               id="email" 
               placeholder="E-mail" 
-              hasError={!!errors.email}
-              {...register('email')} 
+              errorMessage={errors.email?.message}
+              control={control} 
             />
 
             <PasswordInput 
               id="password" 
               placeholder='Senha'
-              hasError={!!errors.password}
-              {...register('password')} 
+              errorMessage={errors.password?.message}
+              control={control} 
             />
 
             <div className='flex flex-col md:flex-row items-center justify-between'>

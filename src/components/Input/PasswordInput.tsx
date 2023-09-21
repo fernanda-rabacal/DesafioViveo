@@ -5,31 +5,26 @@ import { InputProps } from "@/@types/types";
 import { CssTextField } from "./styles";
 import { Controller } from "react-hook-form";
 
-export function PasswordInput({ hasError, inputRef, control, name, ...props } : InputProps) {
+export function PasswordInput({ errorMessage, control, name, ...props } : InputProps) {
     const [showPassword, setShowPassword] = useState(false)
     
     const handleClickShowPassword = () => {
         setShowPassword(prevState => !prevState)
     }
 
-    console.log(hasError)
-
     return (
       <Controller
         name={name}
         control={control}
         render={({
-          field: { onChange, value },
-          fieldState: { error },
-          formState,
+          field: { onChange }
         }) => (
             <CssTextField 
-              inputRef={inputRef}
               onChange={onChange}
               type={showPassword ? 'text' : 'password'}
               inputProps={{...props}}
-              error={hasError}
-              helperText={hasError && "Preencha esse campo"}
+              error={!!errorMessage}
+              helperText={errorMessage ? errorMessage : ''}
               InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">

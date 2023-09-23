@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment } from "@mui/material";
 import { InputProps } from "@/@types/types";
-import { CssTextField } from "./styles";
 import { Controller } from "react-hook-form";
+import { CssTextField } from "./styles";
 
 export function PasswordInput({ errorMessage, control, name, ...props } : InputProps) {
     const [showPassword, setShowPassword] = useState(false)

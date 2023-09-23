@@ -37,8 +37,6 @@ const socialIcons = [
     },
 ]
 
-"text-sm uppercase text-turquoise-dark hover:text-turquoise-light" 
-
 export function Footer() {
     return (
         <footer className="border-t border-slate-300 p-8 flex flex-col gap-12 lg:flex-row lg:justify-between">

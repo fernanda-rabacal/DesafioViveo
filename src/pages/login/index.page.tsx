@@ -2,21 +2,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import Head from "next/head";
 import Link from "next/link";
 import Image from 'next/image';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toastNotify } from '@/lib/toastify';
-import { ToastContainer } from "react-toastify";
 import { Input } from '@/components/Input';
 import { PasswordInput } from '@/components/Input/PasswordInput';
-import { Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
-import { LoginFormData, loginFormSchema } from '@/utils/zodValidationsSchemas';
 import { useAuth } from '@/hooks/useAuth';
+import { LoginFormData, loginFormSchema } from '@/utils/zodValidationsSchemas';
+import { toastNotify } from '@/lib/toastify';
+import { ToastContainer } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
 
 
 export default function Login() {
   const { 
       control, 
-      register, 
       handleSubmit, 
       formState: { 
         errors 
@@ -29,8 +28,6 @@ export default function Login() {
 
   function handleSignIn(data: LoginFormData) {
     const { status, user } = signIn(data)
-
-    console.log("teste")
     
     if(!status) {
       toastNotify("error", "Email ou senha incorretos")

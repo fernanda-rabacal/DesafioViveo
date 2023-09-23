@@ -21,7 +21,7 @@ export const registerFormSchema = z.object({
       .string()
       .min(1, { message: "Este campo é obrigatório" }),
     number: z
-      .number()
+      .string()
       .min(1, { message: "Este campo é obrigatório" }),
     neighbour: z
       .string()

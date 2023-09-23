@@ -1,20 +1,20 @@
+import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { maskCPF, maskPhone } from "@/utils/masks";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { Input } from "@/components/Input";
 import { PasswordInput } from "@/components/Input/PasswordInput";
 import { Button, Typography } from "@mui/material";
+import { useAuth } from "@/hooks/useAuth";
+import { maskCPF, maskPhone } from "@/utils/masks";
 import { RegisterFormData, registerFormSchema } from "@/utils/zodValidationsSchemas";
 import { api } from "@/lib/axios";
-import { Header } from "@/components/Header";
-import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/router";
 import { toastNotify } from "@/lib/toastify";
-import Image from "next/image";
-import { Footer } from "@/components/Footer";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function Register() {
   const [searchAdressSucessfull, setSearchAdressSucessfull] = useState(false)
@@ -22,9 +22,9 @@ export default function Register() {
       watch, 
       setValue, 
       handleSubmit, 
-      control,
       setError,
       clearErrors,
+      control,
       formState: { 
         errors, 
         isSubmitting 
@@ -61,9 +61,9 @@ export default function Register() {
             throw new Error(response.data.message)
           }
 
-          clearErrors()
-
           const { data } = response
+          
+          clearErrors()
 
           setSearchAdressSucessfull(true)
 

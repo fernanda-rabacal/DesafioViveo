@@ -7,19 +7,19 @@ interface SignInReturnData {
     user: User | null
 }
 
-interface UserContextType {
+interface AuthContextType {
     signUp: (data: User) => void
     signIn: (data: LoginProps) => SignInReturnData
 }
 
-interface UserContextProviderProps {
+interface AuthContextProviderProps {
     children: ReactNode;
 }
 
-export const UserContext = createContext({} as UserContextType)
+export const AuthContext = createContext({} as AuthContextType)
 
 
-export function UserContextProvider({ children } : UserContextProviderProps) {
+export function AuthContextProvider({ children } : AuthContextProviderProps) {
     const [users, setUsers] = useState<User[]>([])
 
     function signUp(data: User) {
@@ -43,11 +43,11 @@ export function UserContextProvider({ children } : UserContextProviderProps) {
     }
 
     return(
-        <UserContext.Provider value={{
+        <AuthContext.Provider value={{
             signIn,
             signUp,
         }}>
             { children }
-        </UserContext.Provider>
+        </AuthContext.Provider>
     )
 }

@@ -1,4 +1,4 @@
-import { UserContextProvider } from '@/contexts/UserContext'
+import { AuthContextProvider } from '@/contexts/AuthContext'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -10,9 +10,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         
-        <UserContextProvider>
+        <AuthContextProvider>
           <Component {...pageProps} />
-        </UserContextProvider>
+        </AuthContextProvider>
       </>
     )
 }

@@ -52,10 +52,7 @@ export const registerFormSchema = z.object({
         .email({ message: "Email é obrigatório" }),
     password: z
         .string()
-        .min(1, { message: "Senha é obrigatória" }),
-    keep_connected: z
-        .string()
-        .transform(val => val === "yes" ? true : false)
+        .min(1, { message: "Senha é obrigatória" })
   })
   
  export type LoginFormData = z.infer<typeof loginFormSchema>

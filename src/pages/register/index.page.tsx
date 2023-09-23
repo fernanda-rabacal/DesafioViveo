@@ -3,13 +3,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { maskCPF } from "@/utils/masks";
+import { maskCPF, maskPhone } from "@/utils/masks";
 import { Input } from "@/components/Input";
 import { PasswordInput } from "@/components/Input/PasswordInput";
 import { Button, Typography } from "@mui/material";
 import { RegisterFormData, registerFormSchema } from "@/utils/zodValidationsSchemas";
 import { api } from "@/lib/axios";
 import { Header } from "@/components/Header";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/router";
+import { toastNotify } from "@/lib/toastify";
+import Image from "next/image";
 
 export default function Register() {
   const [searchAdressSucessfull, setSearchAdressSucessfull] = useState(false)
@@ -27,13 +31,14 @@ export default function Register() {
     } = useForm<RegisterFormData>({
       resolver: zodResolver(registerFormSchema)
     })
-    
-    const cpf = watch("cpf")
-    const cep = watch("cep")
 
-    function handleRegister(data: RegisterFormData) {
-      console.log(data)
-    }
+    const { signUp } = useAuth()
+
+    const router = useRouter()
+    
+    const cep = watch("cep")
+    const cpf = watch("cpf")
+    const phone = watch("phone")
 
     async function handleSearchAddress() {
       if(!cep) {
@@ -70,12 +75,23 @@ export default function Register() {
         console.log(e)
       }
     }
+
+    function handleRegister(data: RegisterFormData) {
+      signUp(data)
+
+      router.push('/login')
+    }
+
   
     useEffect(() => {
       setValue("cpf", maskCPF(cpf))
     },[cpf])
 
-    return (
+    useEffect(() => {
+      setValue("phone", maskPhone(phone))
+    },[phone])
+
+  return (
         <>
           <Head>
               <title>Cadastre-se | Viveo</title>
@@ -83,14 +99,12 @@ export default function Register() {
 
           <Header /> 
           
-          <main className="flex flex-col justify-center bg-slate-100 py-8">
-            <section className='flex flex-col items-center justify-center mt-2 w-full col-span-2'>
-              <Typography variant="h1" className='text-3xl mb-8'>
-                Cadastre, é rápido e facil
-              </Typography>
-
-              <form className="w-4/5 lg:w-3/5 flex flex-col gap-10 bg-white p-12 rounded border border-slate-300" onSubmit={handleSubmit(handleRegister)}>
-                <div className="flex flex-col gap-2 md:grid md:grid-cols-2">
+          <main className="bg-slate-100 p-6">
+              <form 
+                className="m-auto p-12 rounded bg-white border border-slate-300 shadow-lg w-4/5 lg:w-3/4 flex flex-col gap-8 lg:grid grid-cols-2" 
+                onSubmit={handleSubmit(handleRegister)}
+                >
+                <div className="flex flex-col gap-4 md:grid md:grid-cols-2">
                   <Input 
                       type="text"
                       id="name"
@@ -107,14 +121,16 @@ export default function Register() {
                       placeholder="CPF"
                       control={control}
                       errorMessage={errors.cpf?.message}
+                      maxLength={14}
                       />
                   <Input 
                       id="phone"
                       name="phone"
                       type="tel"
-                      placeholder="Telefone"
+                      placeholder="(00) 00000-0000"
                       control={control}
                       errorMessage={errors.phone?.message}
+                      maxLength={15}
                       />
                   <Input 
                       id="email"
@@ -143,7 +159,7 @@ export default function Register() {
                       />
                 </div>
 
-                <div className="flex flex-col gap-2 md:grid md:address-form">
+                <div className="flex flex-col gap-4 md:grid md:address-form">
                   <div className="flex gap-2 items-start col-span-3">
                     <Input 
                       type="text"
@@ -220,7 +236,7 @@ export default function Register() {
                     />
                 </div>
                 <Button 
-                    className='col-span-2 text-xl p-3 mt-3 bg-blue-primary text-blue-dark hover:bg-blue-dark hover:text-blue-primary' 
+                    className='w-1/2 mx-auto mt-2 col-span-2 text-lg p-2 bg-blue-primary text-blue-dark hover:bg-blue-dark hover:text-blue-primary' 
                     variant="contained"
                     size="large"
                     type="submit"
@@ -229,14 +245,14 @@ export default function Register() {
                     Cadastrar
                 </Button>
 
-                <Typography variant='body1' className='text-center'>
+                <Typography variant='body1' className='text-center col-span-2'>
                   Já possui cadastro?
                   <Link className='text-link' href="/login"> Faça login</Link>
                 </Typography>
               </form>
-
+            <section className='flex justify-center mt-1 w-full col-span-2'>
             </section>
           </main>
         </>
-    )
+  )
 }

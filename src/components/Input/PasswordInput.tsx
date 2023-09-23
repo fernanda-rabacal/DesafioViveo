@@ -17,11 +17,12 @@ export function PasswordInput({ errorMessage, control, name, ...props } : InputP
         name={name}
         control={control}
         render={({
-          field: { onChange }
+          field: { onChange, value }
         }) => (
             <CssTextField 
-              onChange={onChange}
               type={showPassword ? 'text' : 'password'}
+              onChange={onChange}
+              value={value}
               inputProps={{...props}}
               error={!!errorMessage}
               helperText={errorMessage ? errorMessage : ''}

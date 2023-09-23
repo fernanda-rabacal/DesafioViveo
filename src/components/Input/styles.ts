@@ -22,6 +22,10 @@ export const CssTextField = styled(TextField)({
             '&::placeholder': {
                 color: '#0f4b55',
                 opacity: 1
+            },
+            '&:disabled': {
+                opacity: 0.5,
+                backgroundColor: "#d9d9d9"
             }
         }
     },

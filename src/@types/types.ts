@@ -4,14 +4,22 @@ export interface InputProps extends InputBaseComponentProps {
     errorMessage?: string
 }
 
-export interface LoginProps {
+export interface User {
+    name: string;
     email: string;
     password: string
 }
 
+export type LoginProps = Omit<User, 'name'>
+
 export interface RegisterProps extends LoginProps {
-    name: string;
     cpf: string;
     phone: string;
-    confirm_password: string;
+    cep: string;
+    street: string;
+    number: number;
+    neighbour: string;
+    city: string;
+    uf: string;
+    complement?:string
 }

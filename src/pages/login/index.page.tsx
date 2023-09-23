@@ -2,24 +2,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import Head from "next/head";
 import Link from "next/link";
 import Image from 'next/image';
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toastNotify } from '@/lib/toastify';
 import { ToastContainer } from "react-toastify";
 import { Input } from '@/components/Input';
 import { PasswordInput } from '@/components/Input/PasswordInput';
 import { Button, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { LoginFormData, loginFormSchema } from '@/utils/zodValidationsSchemas';
 
-
-const loginFormSchema = z.object({
-  email: z.string().email({ message: "Email é obrigatório" }),
-  password: z.string().min(1, { message: "Senha é obrigatória" }),
-  keep_connected: z.string().transform(val => val === "yes" ? true : false)
-})
-
-type LoginFormData = z.infer<typeof loginFormSchema>
 
 export default function Login() {
   const { control, register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
@@ -42,16 +33,19 @@ export default function Login() {
       </Head>
 
       <ToastContainer />
-      
+
       <main className='grid grid-cols-1 lg:grid-cols-2 h-screen'>
         <section className='flex flex-col items-center justify-center mt-4'>
           <Image width={150} height={150} src="/images/viveo-logo.svg" alt="Viveo Logo" className='md:w-48'/>
 
-          <Typography variant="h1" className='text-4xl my-8 lg:my-12'>Acesse sua conta</Typography>
+          <Typography variant="h1" className='text-4xl my-8 lg:my-12'>
+            Acesse sua conta
+          </Typography>
 
-          <form onSubmit={handleSubmit(handleSignIn)} className='w-4/5 lg:w-3/5 flex flex-col gap-5' >
+          <form onSubmit={handleSubmit(handleSignIn)} className='w-4/5 lg:w-3/5 flex flex-col gap-5'>
             <Input 
               type="email" 
+              name="email" 
               id="email" 
               placeholder="E-mail" 
               errorMessage={errors.email?.message}
@@ -60,12 +54,13 @@ export default function Login() {
 
             <PasswordInput 
               id="password" 
+              name="password" 
               placeholder='Senha'
               errorMessage={errors.password?.message}
               control={control} 
             />
 
-            <div className='flex flex-col md:flex-row items-center justify-between'>
+            <div className='flex flex-col xl:flex-row xl:items-center justify-between'>
               <FormControlLabel 
                 id="keep-connect"  
                 value="yes"
